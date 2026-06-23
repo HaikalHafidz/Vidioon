@@ -1,0 +1,19 @@
+{
+  "name": "vidioon-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "next": "13.4.7",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "formidable": "3.5.2",
+    "ws": "8.13.0",
+    "ffmpeg-static": "4.4.0",
+    "hls.js": "1.4.0"
+  }
+}
