@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin – Vidioon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">VIDIOON</div>
+    <div class="admin-badge">ADMIN PANEL</div>
+    <nav class="admin-nav">
+      <a href="#dashboard" class="active" onclick="showSection('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="#add-content" onclick="showSection('add-content')"><span class="nav-icon">➕</span> Tambah Konten</a>
+      <a href="#manage-content" onclick="showSection('manage-content')"><span class="nav-icon">🎬</span> Kelola Film</a>
+      <a href="#users" onclick="showSection('users')"><span class="nav-icon">👥</span> Pengguna</a>
+      <a href="#reports" onclick="showSection('reports')"><span class="nav-icon">📈</span> Laporan</a>
+      <a href="#settings" onclick="showSection('settings')"><span class="nav-icon">⚙️</span> Pengaturan</a>
+      <hr style="border-color:rgba(255,255,255,0.06);margin:1rem 0"/>
+      <a href="../index.html"><span class="nav-icon">🌐</span> Lihat Website</a>
+      <a href="../login.html" style="color:var(--accent)"><span class="nav-icon">🚪</span> Keluar</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section">
+      <div class="admin-topbar">
+        <h1>Dashboard</h1>
+        <div style="font-size:13px;color:var(--text2)">👋 Selamat datang, Admin!</div>
+      </div>
+
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-label">Total Film</div>
+          <div class="stat-num" id="totalMovies">8</div>
+          <div class="stat-sub">+2 bulan ini</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Serial</div>
+          <div class="stat-num" id="totalSeries">4</div>
+          <div class="stat-sub">+1 bulan ini</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Anime</div>
+          <div class="stat-num" id="totalAnime">4</div>
+          <div class="stat-sub">Stabil</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pengguna</div>
+          <div class="stat-num">1.2K</div>
+          <div class="stat-sub">+15% minggu ini</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tayangan Hari Ini</div>
+          <div class="stat-num">4.8K</div>
+          <div class="stat-sub">▲ 23% vs kemarin</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Jumlah View</div>
+          <div class="stat-num" id="totalViews">0</div>
+          <div class="stat-sub">Total tayangan konten</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h2>📋 Konten Terbaru Ditambahkan</h2>
+        <table class="admin-table">
+          <thead>
+            <tr><th>Poster</th><th>Judul</th><th>Tipe</th><th>Tahun</th><th>Rating</th><th>Status</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="recentTable">
+            <tr><td colspan="7" style="text-align:center;color:var(--text3);padding:2rem">Memuat data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ADD CONTENT -->
+    <div id="add-content" class="section" style="display:none">
+      <div class="admin-topbar">
+        <h1>➕ Tambah Konten Baru</h1>
+        <button class="btn-admin-outline" onclick="resetForm()">Reset Form</button>
+      </div>
+
+      <!-- Type Selector -->
+      <div class="admin-card">
+        <h2>Tipe Konten</h2>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+          <button class="filter-btn active" onclick="setType('movie',this)" id="typeMovie">🎬 Film</button>
+          <button class="filter-btn" onclick="setType('series',this)" id="typeSeries">📺 Serial TV</button>
+          <button class="filter-btn" onclick="setType('anime',this)" id="typeAnime">⚡ Anime</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <!-- Info Dasar -->
+        <div class="admin-card">
+          <h2>📝 Informasi Dasar</h2>
+
+          <label class="admin-label">Judul *</label>
+          <input class="admin-input" id="f_title" placeholder="Judul film/serial"/>
+
+          <label class="admin-label">Judul Asli (Original Title)</label>
+          <input class="admin-input" id="f_original_title" placeholder="Original title"/>
+
+          <div class="form-row">
+            <div>
+              <label class="admin-label">Tahun Rilis *</label>
+              <input class="admin-input" id="f_year" type="number" placeholder="2024" min="1900" max="2030"/>
+            </div>
+            <div>
+              <label class="admin-label">Rating IMDb</label>
+              <input class="admin-input" id="f_rating" type="number" placeholder="8.5" step="0.1" min="0" max="10"/>
+            </div>
+          </div>
+
+          <label class="admin-label">Genre *</label>
+          <select class="admin-input admin-select" id="f_genre">
+            <option value="">Pilih Genre</option>
+            <option>Aksi</option><option>Petualangan</option><option>Animasi</option>
+            <option>Komedi</option><option>Kejahatan</option><option>Drama</option>
+            <option>Fantasi</option><option>Horor</option><option>Thriller</option>
+            <option>Sci-Fi</option><option>Romantis</option><option>Dokumenter</option>
+            <option>Keluarga</option><option>Musikal</option><option>Sejarah</option>
+          </select>
+
+          <label class="admin-label">Sinopsis *</label>
+          <textarea class="admin-input admin-textarea" id="f_desc" placeholder="Ceritakan sinopsis film ini..."></textarea>
+
+          <div class="form-row">
+            <div>
+              <label class="admin-label">Durasi (Film)</label>
+              <input class="admin-input" id="f_duration" placeholder="2j 30m"/>
+            </div>
+            <div>
+              <label class="admin-label">Bahasa</label>
+              <select class="admin-input admin-select" id="f_lang">
+                <option>Indonesia</option><option>Inggris</option><option>Jepang</option>
+                <option>Korea</option><option>Mandarin</option><option>Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <label class="admin-label">Tags (pisah koma)</label>
+          <input class="admin-input" id="f_tags" placeholder="action, superhero, marvel"/>
+        </div>
+
+        <!-- Media & Embed -->
+        <div>
+          <div class="admin-card">
+            <h2>🖼️ Poster & Thumbnail</h2>
+
+            <label class="admin-label">URL Poster *</label>
+            <input class="admin-input" id="f_poster" placeholder="https://... (gambar 2:3)" oninput="previewPoster(this.value)"/>
+
+            <label class="admin-label">URL Backdrop (gambar lebar)</label>
+            <input class="admin-input" id="f_backdrop" placeholder="https://... (gambar 16:9)"/>
+
+            <!-- Preview -->
+            <div style="display:flex;gap:1rem;margin-top:0.5rem">
+              <div>
+                <p style="font-size:11px;color:var(--text3);margin-bottom:4px">Preview Poster</p>
+                <img id="posterPreview" src="" style="width:80px;height:112px;object-fit:cover;border-radius:6px;background:var(--bg3);border:1px solid rgba(255,255,255,0.08)"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h2>▶️ Link Streaming</h2>
+            <label class="admin-label">Server 1 – Embed URL *</label>
+            <input class="admin-input" id="f_embed1" placeholder="https://www.2embed.cc/embed/..."/>
+
+            <label class="admin-label">Server 2 – VidSrc</label>
+            <input class="admin-input" id="f_embed2" placeholder="https://vidsrc.to/embed/movie/..."/>
+
+            <label class="admin-label">Server 3 – Cadangan</label>
+            <input class="admin-input" id="f_embed3" placeholder="URL embed server cadangan"/>
+
+            <div style="background:rgba(229,9,20,0.08);border:1px solid rgba(229,9,20,0.2);border-radius:8px;padding:0.75rem;font-size:12px;color:var(--text2)">
+              💡 <strong>Tips:</strong> Gunakan 2embed.cc, vidsrc.to, atau multiembed.mov untuk embed gratis. Format: <code style="color:var(--accent)">https://www.2embed.cc/embed/TMDB_ID</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Series/Anime specific -->
+      <div class="admin-card" id="episodeSection" style="display:none">
+        <h2>📺 Info Episode</h2>
+        <div class="form-row">
+          <div>
+            <label class="admin-label">Jumlah Season</label>
+            <input class="admin-input" id="f_seasons" type="number" placeholder="1"/>
+          </div>
+          <div>
+            <label class="admin-label">Jumlah Episode</label>
+            <input class="admin-input" id="f_episodes" type="number" placeholder="12"/>
+          </div>
+        </div>
+        <label class="admin-label">Status Tayang</label>
+        <select class="admin-input admin-select" id="f_status">
+          <option value="ongoing">Sedang Tayang</option>
+          <option value="completed">Selesai</option>
+          <option value="hiatus">Hiatus</option>
+        </select>
+      </div>
+
+      <!-- Submit -->
+      <div style="display:flex;gap:1rem;justify-content:flex-end;margin-top:1rem">
+        <button class="btn-admin-outline" onclick="previewContent()">👁️ Preview</button>
+        <button class="btn-admin" onclick="submitContent()">✓ Simpan Konten</button>
+      </div>
+    </div>
+
+    <!-- MANAGE CONTENT -->
+    <div id="manage-content" class="section" style="display:none">
+      <div class="admin-topbar">
+        <h1>🎬 Kelola Film</h1>
+        <div style="display:flex;gap:0.75rem">
+          <input class="admin-input" style="width:240px;margin:0" placeholder="🔍 Cari judul..." oninput="filterTable(this.value)"/>
+          <button class="btn-admin" onclick="showSection('add-content')">+ Tambah Baru</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem">
+          <button class="filter-btn active" onclick="filterType('all',this)">Semua</button>
+          <button class="filter-btn" onclick="filterType('movie',this)">Film</button>
+          <button class="filter-btn" onclick="filterType('series',this)">Serial</button>
+          <button class="filter-btn" onclick="filterType('anime',this)">Anime</button>
+        </div>
+        <table class="admin-table" id="manageTable">
+          <thead>
+            <tr><th>Poster</th><th>Judul</th><th>Tipe</th><th>Tahun</th><th>Rating</th><th>Status</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="manageBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="users" class="section" style="display:none">
+      <div class="admin-topbar"><h1>👥 Pengguna</h1></div>
+      <div class="admin-card">
+        <table class="admin-table">
+          <thead><tr><th>Nama</th><th>Email</th><th>Bergabung</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <tr><td>Demo User</td><td>demo@vidioon.com</td><td>1 Jan 2024</td><td><span class="badge badge-green">Aktif</span></td><td><div class="action-btns"><button class="btn-edit">Edit</button><button class="btn-delete">Ban</button></div></td></tr>
+            <tr><td>Budi Santoso</td><td>budi@gmail.com</td><td>15 Mar 2024</td><td><span class="badge badge-green">Aktif</span></td><td><div class="action-btns"><button class="btn-edit">Edit</button><button class="btn-delete">Ban</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settings" class="section" style="display:none">
+      <div class="admin-topbar"><h1>⚙️ Pengaturan</h1></div>
+      <div class="admin-card">
+        <h2>🌐 Pengaturan Umum</h2>
+        <label class="admin-label">Nama Website</label>
+        <input class="admin-input" value="Vidioon"/>
+        <label class="admin-label">Deskripsi</label>
+        <textarea class="admin-input admin-textarea">Nonton film, serial, dan anime favorit kamu secara gratis.</textarea>
+        <label class="admin-label">URL Logo</label>
+        <input class="admin-input" placeholder="https://..."/>
+        <button class="btn-admin">Simpan Pengaturan</button>
+      </div>
+      <div class="admin-card">
+        <h2>🔒 Keamanan</h2>
+        <label class="admin-label">Password Admin Baru</label>
+        <input class="admin-input" type="password" placeholder="••••••••"/>
+        <label class="admin-label">Konfirmasi Password</label>
+        <input class="admin-input" type="password" placeholder="••••••••"/>
+        <button class="btn-admin">Ganti Password</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="app.js"></script>
+<script>
+const ADMIN_TOKEN = localStorage.getItem('vidioon_token');
+const ADMIN_ROLE = localStorage.getItem('vidioon_role');
+const ADMIN_API = 'http://localhost:3000/api';
+
+if (!ADMIN_TOKEN || ADMIN_ROLE !== 'admin') {
+  alert('Akses admin membutuhkan login sebagai admin.');
+  window.location = 'login.html';
+}
+
+function getAdminHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + ADMIN_TOKEN
+  };
+}
+
+let currentType = 'movie';
+let contentDB = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  addToastContainer();
+  await loadAdminData();
+});
+
+async function loadAdminData() {
+  await Promise.all([loadAdminStats(), loadAdminContent()]);
+  renderDashboard();
+  renderManageTable(contentDB);
+}
+
+async function loadAdminStats() {
+  try {
+    const res = await fetch(`${ADMIN_API}/admin/stats`, { headers: getAdminHeaders() });
+    const data = await res.json();
+    if (data && !data.message) {
+      document.getElementById('totalMovies').textContent = data.movies || 0;
+      document.getElementById('totalSeries').textContent = data.series || 0;
+      document.getElementById('totalAnime').textContent = data.anime || 0;
+      document.getElementById('totalViews').textContent = data.totalViews || 0;
+      const usersCard = document.querySelector('.stat-card:nth-child(4) .stat-num');
+      if (usersCard) usersCard.textContent = data.totalUsers || 0;
+    }
+  } catch (e) {
+    console.warn('Gagal memuat statistik admin:', e);
+  }
+}
+
+async function loadAdminContent() {
+  try {
+    const res = await fetch(`${ADMIN_API}/content?limit=1000`, { headers: getAdminHeaders() });
+    const data = await res.json();
+    if (data && Array.isArray(data.data)) {
+      contentDB = data.data;
+    } else if (Array.isArray(data)) {
+      contentDB = data;
+    } else {
+      contentDB = [];
+    }
+  } catch (e) {
+    console.warn('Gagal memuat konten admin:', e);
+    contentDB = [];
+  }
+}
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.style.display='none');
+  document.getElementById('section-'+id).style.display='block';
+  document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
+  document.querySelector(`.admin-nav a[href="#${id}"]`)?.classList.add('active');
+}
+
+function setType(type, btn) {
+  currentType = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const ep = document.getElementById('episodeSection');
+  ep.style.display = (type === 'series' || type === 'anime') ? 'block' : 'none';
+}
+
+function previewPoster(url) {
+  const img = document.getElementById('posterPreview');
+  if (img && url) img.src = url;
+}
+
+function resetForm() {
+  ['f_title','f_original_title','f_year','f_rating','f_genre','f_desc','f_duration',
+   'f_tags','f_poster','f_backdrop','f_embed1','f_embed2','f_embed3','f_seasons','f_episodes'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  showToast('Form direset', 'success');
+}
+
+async function submitContent() {
+  const title = document.getElementById('f_title').value.trim();
+  const year = parseInt(document.getElementById('f_year').value);
+  const genre = document.getElementById('f_genre').value;
+  const desc = document.getElementById('f_desc').value.trim();
+  const poster = document.getElementById('f_poster').value.trim();
+  const embed = document.getElementById('f_embed1').value.trim();
+  const rating = parseFloat(document.getElementById('f_rating').value) || 0;
+
+  if (!title || !year || !genre || !desc || !poster) {
+    showToast('Lengkapi semua field yang wajib diisi (*)', 'error');
+    return;
+  }
+
+  const newContent = {
+    title,
+    year,
+    genre,
+    desc,
+    poster,
+    rating,
+    type: currentType,
+    embed: embed || `https://www.2embed.cc/embed/0`,
+    backdrop: document.getElementById('f_backdrop').value.trim(),
+    duration: document.getElementById('f_duration').value,
+    seasons: parseInt(document.getElementById('f_seasons')?.value) || null,
+    episodes: parseInt(document.getElementById('f_episodes')?.value) || null,
+    status: document.getElementById('f_status')?.value || 'completed',
+    embed2: document.getElementById('f_embed2').value,
+    embed3: document.getElementById('f_embed3').value,
+  };
+
+  try {
+    const res = await fetch(`${ADMIN_API}/content`, {
+      method: 'POST',
+      headers: getAdminHeaders(),
+      body: JSON.stringify(newContent)
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      showToast(`✓ "${data.content?.title || title}" berhasil ditambahkan!`, 'success');
+      await loadAdminData();
+      resetForm();
+      showSection('manage-content');
+      return;
+    }
+
+    showToast(data.message || 'Gagal menambahkan konten', 'error');
+  } catch (e) {
+    showToast('Koneksi gagal. Periksa server backend.', 'error');
+    console.error(e);
+  }
+}
+
+function renderDashboard() {
+  const movies = contentDB.filter(c => c.type==='movie');
+  const series = contentDB.filter(c => c.type==='series');
+  const anime = contentDB.filter(c => c.type==='anime');
+  document.getElementById('totalMovies').textContent = movies.length;
+  document.getElementById('totalSeries').textContent = series.length;
+  document.getElementById('totalAnime').textContent = anime.length;
+
+  const rows = contentDB.slice(-10).reverse().map(m => `
+    <tr>
+      <td><img src="${m.poster}" class="table-thumb" onerror="this.style.background='var(--bg3)'"/></td>
+      <td>${m.title}</td>
+      <td><span class="badge ${m.type==='movie'?'badge-green':m.type==='anime'?'badge-yellow':'badge-red'}">${m.type==='movie'?'Film':m.type==='series'?'Serial':'Anime'}</span></td>
+      <td>${m.year}</td>
+      <td style="color:var(--gold)">⭐ ${m.rating}</td>
+      <td><span class="badge badge-green">Aktif</span></td>
+      <td><div class="action-btns"><button class="btn-edit" onclick="editContent(${m.id})">Edit</button><button class="btn-delete" onclick="deleteContent(${m.id})">Hapus</button></div></td>
+    </tr>
+  `).join('');
+  const tb = document.getElementById('recentTable');
+  if (tb) tb.innerHTML = rows || '<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:2rem">Belum ada konten</td></tr>';
+}
+
+function renderManageTable(data) {
+  const tb = document.getElementById('manageBody');
+  if (!tb) return;
+  tb.innerHTML = data.map(m => `
+    <tr>
+      <td><img src="${m.poster}" class="table-thumb"/></td>
+      <td>${m.title}</td>
+      <td><span class="badge ${m.type==='movie'?'badge-green':m.type==='anime'?'badge-yellow':'badge-red'}">${m.type==='movie'?'Film':m.type==='series'?'Serial':'Anime'}</span></td>
+      <td>${m.year}</td>
+      <td style="color:var(--gold)">⭐ ${m.rating}</td>
+      <td><span class="badge badge-green">Aktif</span></td>
+      <td><div class="action-btns"><button class="btn-edit" onclick="editContent(${m.id})">Edit</button><button class="btn-delete" onclick="deleteContent(${m.id})">Hapus</button></div></td>
+    </tr>
+  `).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:2rem">Belum ada konten</td></tr>';
+}
+
+async function deleteContent(id) {
+  if (!confirm('Hapus konten ini?')) return;
+  try {
+    const res = await fetch(`${ADMIN_API}/content/${id}`, { method:'DELETE', headers:getAdminHeaders() });
+    const data = await res.json();
+    if (res.ok) {
+      showToast('Konten dihapus', 'success');
+      await loadAdminData();
+      return;
+    }
+    showToast(data.message || 'Gagal menghapus konten', 'error');
+  } catch (e) {
+    showToast('Koneksi gagal. Periksa server backend.', 'error');
+    console.error(e);
+  }
+}
+
+function filterTable(val) {
+  const filtered = contentDB.filter(m => m.title.toLowerCase().includes(val.toLowerCase()));
+  renderManageTable(filtered);
+}
+
+function filterType(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = type === 'all' ? contentDB : contentDB.filter(m => m.type === type);
+  renderManageTable(filtered);
+}
+
+function editContent(id) {
+  const c = contentDB.find(m => m.id === id);
+  if (!c) return;
+  showSection('add-content');
+  const typeButton = c.type === 'series' ? document.getElementById('typeSeries') : c.type === 'anime' ? document.getElementById('typeAnime') : document.getElementById('typeMovie');
+  if (typeButton) setType(c.type, typeButton);
+  document.getElementById('f_title').value = c.title || '';
+  document.getElementById('f_year').value = c.year || '';
+  document.getElementById('f_rating').value = c.rating || '';
+  document.getElementById('f_genre').value = c.genre || '';
+  document.getElementById('f_desc').value = c.desc || '';
+  document.getElementById('f_poster').value = c.poster || '';
+  document.getElementById('f_backdrop').value = c.backdrop || '';
+  document.getElementById('f_embed1').value = c.embed || '';
+  document.getElementById('f_embed2').value = c.embed2 || '';
+  document.getElementById('f_embed3').value = c.embed3 || '';
+  document.getElementById('f_duration').value = c.duration || '';
+  document.getElementById('f_seasons').value = c.seasons || '';
+  document.getElementById('f_episodes').value = c.episodes || '';
+  document.getElementById('f_status').value = c.status || 'completed';
+  previewPoster(c.poster);
+  showToast('Mode edit aktif', 'success');
+}
+
+function previewContent() {
+  const title = document.getElementById('f_title').value;
+  if (!title) { showToast('Isi judul terlebih dahulu', 'error'); return; }
+  showToast(`Preview: "${title}" - Akan tampil di website`, 'success');
+}
+</script>
+</body>
+</html>
