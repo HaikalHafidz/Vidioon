@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Film – Vidioon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="frontend/style.css"/>
+</head>
+<body>
+<nav class="navbar solid" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><span class="logo-icon">🎬</span>VIDIOON</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="movies.html" class="active">Film</a></li>
+      <li><a href="series.html">Serial</a></li>
+      <li><a href="anime.html">Anime</a></li>
+      <li><a href="genre.html">Genre</a></li>
+    </ul>
+    <div class="nav-actions"><a href="login.html" class="btn-nav">Masuk</a></div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>🎬 FILM</h1>
+  <p>Koleksi film terbaik dari seluruh dunia</p>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterByGenre('Semua')">Semua</button>
+  <button class="filter-btn" onclick="filterByGenre('Aksi')">Aksi</button>
+  <button class="filter-btn" onclick="filterByGenre('Drama')">Drama</button>
+  <button class="filter-btn" onclick="filterByGenre('Sci-Fi')">Sci-Fi</button>
+  <button class="filter-btn" onclick="filterByGenre('Petualangan')">Petualangan</button>
+  <button class="filter-btn" onclick="filterByGenre('Horor')">Horor</button>
+  <button class="filter-btn" onclick="filterByGenre('Komedi')">Komedi</button>
+  <button class="filter-btn" onclick="filterByGenre('Animasi')">Animasi</button>
+</div>
+
+<div class="content-grid" id="contentGrid"></div>
+
+<!-- Modal & Footer -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal()"></div>
+<div class="modal" id="modal">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-thumb"><img id="modalThumb" src="" alt=""/><a id="modalPlay" href="#" class="modal-play-btn">▶ Tonton</a></div>
+  <div class="modal-body">
+    <h2 id="modalTitle"></h2>
+    <div class="modal-meta" id="modalMeta"></div>
+    <p id="modalDesc"></p>
+    <div class="modal-actions"><a id="modalWatchBtn" href="#" class="btn-play">▶ Tonton Sekarang</a><button class="btn-wishlist" onclick="addWishlist()">+ Daftar Saya</button></div>
+  </div>
+</div>
+
+<footer style="background:var(--bg2);border-top:1px solid rgba(255,255,255,0.05);padding:2rem;text-align:center;color:var(--text3);font-size:13px;margin-top:3rem">
+  <p>© 2024 Vidioon · Nonton Gratis Tanpa Batas</p>
+</footer>
+
+<script src="app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  addToastContainer();
+  initContentPage('movie');
+});
+</script>
+</body>
+</html>

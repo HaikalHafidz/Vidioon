@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vidioon – Nonton Gratis, Tanpa Batas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="frontend/style.css" />
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><span class="logo-icon">🎬</span>VIDIOON</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Beranda</a></li>
+      <li><a href="movies.html">Film</a></li>
+      <li><a href="series.html">Serial</a></li>
+      <li><a href="anime.html">Anime</a></li>
+      <li><a href="genre.html">Genre</a></li>
+      <li><a href="frontend/top10.html">Top 10</a></li>
+      <li><a href="new.html">Terbaru</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn-search" onclick="toggleSearch()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+      <a href="login.html" class="btn-nav">Masuk</a>
+    </div>
+    <button class="nav-burger" onclick="toggleNav()">☰</button>
+  </div>
+  <div class="search-bar" id="searchBar">
+    <input type="text" placeholder="Cari film, serial, anime..." id="searchInput" oninput="searchContent(this.value)"/>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg" style="background-image:url('https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg')"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🔥 Trending #1</div>
+    <h1 class="hero-title">Dune: Part Two</h1>
+    <div class="hero-meta">
+      <span class="imdb">⭐ 8.5 IMDb</span>
+      <span>2024</span>
+      <span>2j 46m</span>
+      <span class="tag">Sci-Fi</span>
+      <span class="tag">Petualangan</span>
+    </div>
+    <p class="hero-desc">Paul Atreides menyatukan dirinya dengan Chani dan kaum Fremen dalam perjalanan balas dendam terhadap para konspirator yang menghancurkan keluarganya.</p>
+    <div class="hero-actions">
+      <a href="frontend/watch.html" class="btn-play">▶ Tonton Sekarang</a>
+      <button class="btn-info" onclick="showModal(1)">ℹ Info Lebih Lanjut</button>
+    </div>
+  </div>
+  <div class="hero-dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+</section>
+
+<!-- CONTENT ROWS -->
+<main class="main-content">
+
+  <!-- Trending -->
+  <section class="row-section">
+    <h2 class="row-title">🔥 Trending Sekarang</h2>
+    <div class="row-scroll" id="trendingRow"></div>
+  </section>
+
+  <!-- Film Terbaru -->
+  <section class="row-section">
+    <h2 class="row-title">🎬 Film Terbaru</h2>
+    <div class="row-scroll" id="newMoviesRow"></div>
+  </section>
+
+  <!-- Serial Populer -->
+  <section class="row-section">
+    <h2 class="row-title">📺 Serial Populer</h2>
+    <div class="row-scroll" id="seriesRow"></div>
+  </section>
+
+  <!-- Anime -->
+  <section class="row-section">
+    <h2 class="row-title">⚡ Anime Pilihan</h2>
+    <div class="row-scroll" id="animeRow"></div>
+  </section>
+
+  <!-- Top 10 -->
+  <section class="row-section">
+    <h2 class="row-title">🏆 Top 10 Indonesia</h2>
+    <div class="top10-grid" id="top10Grid"></div>
+  </section>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal()"></div>
+<div class="modal" id="modal">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-thumb">
+    <img id="modalThumb" src="" alt=""/>
+    <a id="modalPlay" href="#" class="modal-play-btn">▶ Tonton</a>
+  </div>
+  <div class="modal-body">
+    <h2 id="modalTitle"></h2>
+    <div class="modal-meta" id="modalMeta"></div>
+    <p id="modalDesc"></p>
+    <div class="modal-actions">
+      <a id="modalWatchBtn" href="#" class="btn-play">▶ Tonton Sekarang</a>
+      <button class="btn-wishlist" onclick="addWishlist()">+ Daftar Saya</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo">VIDIOON</span>
+      <p>Nonton film, serial, dan anime favorit kamu secara gratis. Tanpa langganan, tanpa batas.</p>
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Konten</h4>
+        <a href="movies.html">Film</a>
+        <a href="series.html">Serial TV</a>
+        <a href="anime.html">Anime</a>
+        <a href="genre.html">Genre</a>
+      </div>
+      <div>
+        <h4>Vidioon</h4>
+        <a href="about.html">Tentang Kami</a>
+        <a href="contact.html">Kontak</a>
+        <a href="faq.html">FAQ</a>
+        <a href="dmca.html">DMCA</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Vidioon. Dibuat dengan ❤️ untuk semua penikmat film.</p>
+  </div>
+</footer>
+
+<script src="frontend/app.js"></script>
+</body>
+</html>
